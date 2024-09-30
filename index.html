@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMeans Clustering</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>KMeans Clustering Algorithm</h1>
+    
+    <form id="kmeans-form">
+        <div>
+            <input type="number" id="clusters" placeholder="Number of Clusters(k)" required>
+        </div>
+
+        <div>
+            <label for="method">Initialization Method:</label>
+            <select id="method" name="method">
+                <option value="random">Random</option>
+                <option value="farthest_first">Farthest First</option>
+                <option value="kmeans++">KMeans++</option>
+                <option value="manual">Manual</option>
+            </select>
+        </div>
+
+        <!-- Buttons for KMeans functionalities -->
+        <div>
+            <button type="button" id="step-through">Step Through KMeans</button>
+        </div>
+
+        <div>
+            <button type="button" id="go-to-convergence">Run to Convergence</button>
+        </div>
+        
+        <div>
+            <button type="button" id="generate-data">Generate New Dataset</button>
+        </div>
+
+
+        <div>
+            <button type="button" id="reset">Reset Algorithm</button>
+        </div>
+
+        <script>
+            document.getElementById('runKMeans').onclick = function() {
+                const dataInput = document.getElementById('dataInput').value;
+                let data;
+    
+                // Parse the data input
+                try {
+                    data = JSON.parse(dataInput);
+                } catch (error) {
+                    document.getElementById('output').textContent = 'Invalid data format. Please enter valid JSON.';
+                    return;
+                }
+    
+                const k = parseInt(document.getElementById('k').value);
+                const method = document.getElementById('method').value;
+    
+                // Check if k is valid
+                if (k <= 0) {
+                    document.getElementById('output').textContent = 'Invalid value for k. It must be greater than 0.';
+                    return;
+                }
+    
+                fetch('/kmeans', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data, k, method })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    document.getElementById('output').textContent = JSON.stringify(result, null, 2);  // Display the result
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('output').textContent = 'An error occurred: ' + error;
+                });
+            };
+        </script>
+
+    </form>
+
+    <div id="kmeans-plot" style="width: 100%; height: 500px;"></div>
+
+    <!-- Including Plotly and your custom scripts -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="/static/script.js"></script>
+    <script src="/static/plot.js"></script>
+</body>
+</html>
+
+
+
+
+

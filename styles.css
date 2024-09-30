@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#kmeans-form {
+    margin-top: 20px;
+    display: inline-block;
+    text-align: left;
+}
+
+label, select, input, button {
+    display: block;
+    margin: 10px 0;
+}
+
+button {
+    padding: 5px 10px;
+}
+
+#kmeans-plot {
+    margin-top: 20px;
+    width: 600px;
+    height: 400px;
+    display: block;
+    margin: 0 auto;
+}
